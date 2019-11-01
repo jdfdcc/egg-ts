@@ -1,7 +1,7 @@
 
 import { Controller } from 'egg';
 import { fail } from '../utils/handler';
-import { appId, appSecret } from '../utils/wechat';
+import { appId, appSecret, decryptData } from '../utils/wechat';
 
 // 文档地址 https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html
 export default class WeChatController extends Controller {
@@ -19,5 +19,21 @@ export default class WeChatController extends Controller {
     });
     console.log(result);
     ctx.body = fail(result.data);
+  }
+
+  /**
+   * 公共删除的接口
+   */
+  async decryptData() {
+    const { ctx } = this;
+    const { encryptedData, iv, sessionKey } = ctx.request.body;
+    console.log({
+      encryptedData, iv, sessionKey,
+    });
+    // const WXBizDataCrypt = require('./../assets/lib/wechat/WXBizDataCrypt');
+    // const pc = new WXBizDataCrypt(appId, sessionKey);
+    // const data = pc.decryptData(encryptedData , iv);
+    const result = await decryptData(encryptedData, iv, sessionKey);
+    ctx.body = fail(result);
   }
 }

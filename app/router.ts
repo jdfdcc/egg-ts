@@ -15,4 +15,6 @@ export default (app: Application) => {
 
   // 微信相关
   router.get(`${api}/wx/index`, controller.wechat.login);
+  // 解析数据
+  router.post(`${api}/wx/decrypt`, controller.wechat.decryptData);
 };
