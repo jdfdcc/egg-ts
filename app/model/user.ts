@@ -7,7 +7,7 @@ export default function(app: Application) {
   const UserSchema = new Schema({
     userName: {
       type: String,
-      unique: true,
+      unique: false, // 是否是唯一的key
       required: true,
     },
   });

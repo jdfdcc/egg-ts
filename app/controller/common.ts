@@ -9,9 +9,6 @@ export default class CommonController extends Controller {
    */
   async getList() {
     const { ctx } = this;
-    ctx.model.User.find({}).exec((err: any, result: any) => {
-      console.log('我查询到数据了', err, result);
-    });
     const result = await ctx.model.User.find({});
     ctx.body = success(result);
   }
@@ -21,6 +18,10 @@ export default class CommonController extends Controller {
    */
   async save() {
     const { ctx } = this;
+    const SaveUser = new ctx.model.User({
+      userName: '31231'
+    });
+    SaveUser.save();
     ctx.body = fail('我是失败的返回');
   }
 

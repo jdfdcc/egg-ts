@@ -16,7 +16,7 @@ export default (appInfo: EggAppInfo) => {
   };
 
   config.mongoose = {
-    url: 'mongodb://119.23.255.136/test',
+    url: 'mongodb://119.23.255.136/dev',
     options: {},
   };
 
