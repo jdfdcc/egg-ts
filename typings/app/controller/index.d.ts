@@ -5,11 +5,13 @@ import 'egg';
 import ExportCommon from '../../../app/controller/common';
 import ExportHome from '../../../app/controller/home';
 import ExportOrder from '../../../app/controller/order';
+import ExportWechat from '../../../app/controller/wechat';
 
 declare module 'egg' {
   interface IController {
     common: ExportCommon;
     home: ExportHome;
     order: ExportOrder;
+    wechat: ExportWechat;
   }
 }

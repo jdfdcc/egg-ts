@@ -12,4 +12,7 @@ export default (app: Application) => {
   router.get(`${api}/home/index`, controller.home.success);
   router.get(`${api}/home/fail`, controller.home.fail);
   router.get(`${api}/order/index`, controller.order.fail);
+
+  // 微信相关
+  router.get(`${api}/wx/index`, controller.wechat.login);
 };
