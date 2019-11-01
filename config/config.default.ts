@@ -15,17 +15,26 @@ export default (appInfo: EggAppInfo) => {
     sourceUrl: `https://github.com/eggjs/examples/tree/master/${appInfo.name}`,
   };
 
+  config.mongoose = {
+    url: 'mongodb://119.23.255.136/test',
+    options: {},
+  };
+
   config.cluster = {
     listen: {
       path: '',
       port: 8989,
-      hostname: '0.0.0.0',
+      hostname: '127.0.0.1',
     },
   };
 
-  // the return config will combines to EggAppConfig
   return {
     ...config,
     ...bizConfig,
   };
 };
+
+// export const mongoose = {
+//   url: 'mongodb://127.0.0.1/demo',
+//   options: {},
+// };
