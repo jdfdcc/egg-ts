@@ -9,7 +9,7 @@ export default (app: Application) => {
   router.post(`${api}/common/save`, controller.common.save);
   router.post(`${api}/common/delete`, controller.common.delete);
 
-  router.get(`${api}/home/index`, controller.home.index);
+  router.get(`${api}/home/index`, controller.home.success);
   router.get(`${api}/home/fail`, controller.home.fail);
   router.get(`${api}/order/index`, controller.order.fail);
 };

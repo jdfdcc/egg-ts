@@ -3,9 +3,7 @@ import { Controller } from 'egg';
 import { success, fail } from '../utils/handler';
 
 export default class HomeController extends Controller {
-
-  // const data = await ctx.service.test.sayHi('egg');
-  async index() {
+  async success() {
     const { ctx } = this;
     ctx.body = success('我是成功的返回');
   }

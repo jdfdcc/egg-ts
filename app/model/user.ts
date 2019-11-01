@@ -12,4 +12,4 @@ export default function(app: Application) {
     },
   });
   return mongoose.model('User', UserSchema);
-};
+}
