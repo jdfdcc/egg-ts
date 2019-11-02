@@ -16,11 +16,9 @@ export default class CommonController extends Controller {
   /**
    * 公共保存或者修改的接口
    */
-  async save() {
+  async save(prams) {
     const { ctx } = this;
-    const SaveUser = new ctx.model.User({
-      userName: '31231',
-    });
+    const SaveUser = new ctx.model.User(prams);
     SaveUser.save();
     ctx.body = fail('我是失败的返回');
   }

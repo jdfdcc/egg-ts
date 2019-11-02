@@ -56,13 +56,12 @@ export const decryptData = async (encryptedData: string, iv: string, sessionKey:
     decoded = decipher.update(tencryptedData, 'binary', 'utf8');
     decoded += decipher.final('utf8');
     decoded = JSON.parse(decoded);
-
   } catch (err) {
-    throw new Error('Illegal Buffer');
+    return false;
   }
 
   if (decoded.watermark.appid !== appId) {
-    throw new Error('Illegal Buffer');
+    return false;
   }
 
   return decoded;

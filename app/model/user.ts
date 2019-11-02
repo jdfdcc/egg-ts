@@ -10,10 +10,7 @@ export default function(app: Application) {
       unique: true,
       required: true,
     },
-    userName: {
-      type: String,
-      required: true,
-    },
+    userName: String,
     loginName: String, // 登录用户名
     password: String, // 登录密码
     idNo: String, // 用户身份证号码

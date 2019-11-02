@@ -23,21 +23,16 @@ export default class WeChatController extends Controller {
   }
 
   /**
-   * 解析接口
+   * 解析并保存数据到数据库
    */
   async decryptData() {
     const { ctx } = this;
-    const { service, request, session } = ctx;
-    console.log('request.body', session.sessionKey);
+    const { service, request } = ctx;
     const { encryptedData, iv } = request.body;
-    if (!session.sessionKey) {
-      ctx.body = fail('session 过期');
-      return;
-    }
     const result = await service.wechat.decryptData({
-      encryptedData, iv, sessionKey: session.sessionKey,
+      encryptedData, iv,
     });
-    if (result) {
+    if (typeof result === 'object') {
       ctx.body = success(result);
     } else {
       ctx.body = fail(result);
