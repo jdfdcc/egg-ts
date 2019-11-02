@@ -1,39 +1,46 @@
 
 import { Controller } from 'egg';
-import { fail } from '../utils/handler';
-import { appId, appSecret, decryptData } from '../utils/wechat';
+import { fail, success } from '../utils/handler';
 
 // 文档地址 https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html
 export default class WeChatController extends Controller {
 
   /**
-   * 公共删除的接口
+   * 微信登录接口
    */
-  async login() {
-    // GET https://api.weixin.qq.com/sns/jscode2session?appid=APPID&secret=SECRET&js_code=JSCODE&grant_type=authorization_code
+  async wxLogin() {
     const { ctx } = this;
-    const { code } = ctx.query;
-    const result = await ctx.curl(`https://api.weixin.qq.com/sns/jscode2session?appid=${appId}&secret=${appSecret}&js_code=${code}&grant_type=authorization_code`, {
-      dataType: 'json',
-      timeout: 3000,
-    });
-    console.log(result);
-    ctx.body = fail(result.data);
+    const { header, service } = ctx;
+    const { code } = header;
+    // 解析code
+    const result = await service.wechat.jscode2session(code);
+    const { errcode } = result.data;
+    if (errcode) {
+      ctx.body = fail(result.data);
+    } else {
+      ctx.body = success(result.data);
+    }
   }
 
   /**
-   * 公共删除的接口
+   * 解析接口
    */
   async decryptData() {
     const { ctx } = this;
-    const { encryptedData, iv, sessionKey } = ctx.request.body;
-    console.log({
-      encryptedData, iv, sessionKey,
+    const { service, request, session } = ctx;
+    console.log('request.body', session.sessionKey);
+    const { encryptedData, iv } = request.body;
+    if (!session.sessionKey) {
+      ctx.body = fail('session 过期');
+      return;
+    }
+    const result = await service.wechat.decryptData({
+      encryptedData, iv, sessionKey: session.sessionKey,
     });
-    // const WXBizDataCrypt = require('./../assets/lib/wechat/WXBizDataCrypt');
-    // const pc = new WXBizDataCrypt(appId, sessionKey);
-    // const data = pc.decryptData(encryptedData , iv);
-    const result = await decryptData(encryptedData, iv, sessionKey);
-    ctx.body = fail(result);
+    if (result) {
+      ctx.body = success(result);
+    } else {
+      ctx.body = fail(result);
+    }
   }
 }

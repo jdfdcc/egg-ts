@@ -35,6 +35,12 @@ export const appSecret = 'd604093dd7c905cfe95f261e3cafbca7';
 //   return decoded
 // }
 
+/**
+ * 解析用户的基本信息
+ * @param encryptedData
+ * @param iv
+ * @param sessionKey
+ */
 export const decryptData = async (encryptedData: string, iv: string, sessionKey: string) => {
   const crypto = require('crypto');
   //   // base64 decode

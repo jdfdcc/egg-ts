@@ -4,7 +4,7 @@
  */
 export const success = (params: any) => {
   return {
-    code: 1,
+    code: 0,
     data: params,
   };
 };
@@ -14,7 +14,7 @@ export const success = (params: any) => {
  */
 export const fail = (params: any) => {
   return {
-    code: 0,
+    code: 1,
     data: params,
   };
 };

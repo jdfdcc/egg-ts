@@ -3,9 +3,11 @@
 
 import 'egg';
 import ExportUser from '../../../app/service/user';
+import ExportWechat from '../../../app/service/wechat';
 
 declare module 'egg' {
   interface IService {
     user: ExportUser;
+    wechat: ExportWechat;
   }
 }

@@ -8,7 +8,10 @@ export default (appInfo: EggAppInfo) => {
   config.keys = appInfo.name + '_1572536577023_6811';
 
   // add your egg config in here
-  config.middleware = [];
+  config.middleware = [ 'gzip' ];
+  config.gzip = {
+    threshold: 1024, // 小于 1k 的响应体不压缩
+  };
 
   // add your special config in here
   const bizConfig = {
