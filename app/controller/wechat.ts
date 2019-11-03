@@ -50,4 +50,15 @@ export default class WeChatController extends Controller {
     const { ctx } = this;
     ctx.body = success(ctx.session.userInfo);
   }
+
+  /**
+   * 支付接口
+   */
+  async pay() {
+    const { ctx } = this;
+    const result = await ctx.service.wechat.pay({
+      openId: ctx.session.userInfo.openId,
+    });
+    ctx.body = success(result);
+  }
 }

@@ -24,4 +24,6 @@ export default (app: Application) => {
   // 解析数据 解析用户的手机号码
   router.post(`${api}/wx/decrypt`, auth('WX'), controller.wechat.decryptData);
   router.get(`${api}/wx/userInfo`, auth('WX'), controller.wechat.userInfo);
+  // 支付
+  router.post(`${api}/wx/pay`, auth('WX'), controller.wechat.pay);
 };

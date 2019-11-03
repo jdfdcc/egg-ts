@@ -1,42 +1,20 @@
-// import crypto from 'crypto';
+// 小程序appid
 export const appId = 'wxcb03144d55fc82c4';
+// 小程序secerct
 export const appSecret = 'd604093dd7c905cfe95f261e3cafbca7';
+// 商户号
+export const mchId = '1515299391';
 
-// var crypto = require('crypto')
+// zqAmlwL6OXfdlfKBDnBOe807AaaSe7Uq
+// 7c88a050fc54784c28c1b7b0231096ad
+export const mchkey = 'zqAmlwL6OXfdlfKBDnBOe807AaaSe7Uq';
 
-// function WXBizDataCrypt(appId, sessionKey) {
-//   this.appId = appId
-//   this.sessionKey = sessionKey
-// }
+export const remoteAddress = '192.168.1.2';
 
-// WXBizDataCrypt.prototype.decryptData = function (encryptedData, iv) {
-//   // base64 decode
-//   var sessionKey = new Buffer(this.sessionKey, 'base64')
-//   encryptedData = new Buffer(encryptedData, 'base64')
-//   iv = new Buffer(iv, 'base64')
-
-//   try {
-//      // 解密
-//     var decipher = crypto.createDecipheriv('aes-128-cbc', sessionKey, iv)
-//     // 设置自动 padding 为 true，删除填充补位
-//     decipher.setAutoPadding(true)
-//     var decoded = decipher.update(encryptedData, 'binary', 'utf8')
-//     decoded += decipher.final('utf8')
-//     decoded = JSON.parse(decoded)
-
-//   } catch (err) {
-//     throw new Error('Illegal Buffer')
-//   }
-
-//   if (decoded.watermark.appid !== this.appId) {
-//     throw new Error('Illegal Buffer')
-//   }
-
-//   return decoded
-// }
+export const wxurl = 'https://jerome.chaobenxueyuan.com/api/wx/index';
 
 /**
- * 解析用户的基本信息
+ * 解析小程序的加密信息
  * @param encryptedData
  * @param iv
  * @param sessionKey
