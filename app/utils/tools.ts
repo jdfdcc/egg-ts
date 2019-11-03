@@ -11,6 +11,15 @@ export const uuid = (len = 32) => {
   return pwd;
 };
 
+/**
+ * 密码加密方法
+ * @param pwd
+ */
+export const pwdMd5 = (pwd: string) => {
+  const utility = require('utility');
+  return utility.md5(pwd);
+};
 export default {
   uuid,
+  pwdMd5,
 };

@@ -15,7 +15,7 @@ export const success = (params: any) => {
 export const fail = (params: any) => {
   return {
     code: 1,
-    data: params,
+    message: params,
   };
 };
 

@@ -8,22 +8,26 @@ export default class WeChatService extends Service {
    */
   async jscode2session(code) {
     const { ctx } = this;
-    // const user = await this.ctx.db.query('select * from user where uid = ?', uid);
     const result = await ctx.curl(`https://api.weixin.qq.com/sns/jscode2session?appid=${appId}&secret=${appSecret}&js_code=${code}&grant_type=authorization_code`, {
       dataType: 'json',
       timeout: 3000,
     });
 
     const { openid, session_key } = result.data;
-    // 创建用户
-    const user = {
-      uuid: uuid(),
-      type: 1,
-      openId: openid,
-    };
-    this.ctx.service.user.update(user);
-    ctx.session.sessionKey = session_key;
-    ctx.session.userInfo = user;
+
+    // 解析成功
+    if (openid) {
+      // 创建用户
+      const tempUser = {
+        uuid: uuid(),
+        type: 1,
+        openId: openid,
+      };
+      const user = await this.ctx.service.user.update(tempUser);
+      ctx.session.sessionKey = session_key;
+      ctx.session.code = code;
+      ctx.session.userInfo = user;
+    }
     return result;
   }
 
@@ -36,7 +40,6 @@ export default class WeChatService extends Service {
       return '请先登录';
     }
     const result = await decryptData(encryptedData, iv, this.ctx.session.sessionKey);
-    console.log('result--', result);
     if (!result) {
       return '解析失败';
     }
@@ -58,7 +61,9 @@ export default class WeChatService extends Service {
         phone: phoneNumber,
       };
     }
-    this.ctx.service.user.update(user);
+    const tempUser = await this.ctx.service.user.update(user);
+    // 更新换成的微信用户信息
+    this.ctx.session.userInfo = tempUser;
     return result;
   }
 }

@@ -8,10 +8,7 @@ export default (appInfo: EggAppInfo) => {
   config.keys = appInfo.name + '_1572536577023_6811';
 
   // add your egg config in here
-  config.middleware = [ 'gzip' ];
-  config.gzip = {
-    threshold: 1024, // 小于 1k 的响应体不压缩
-  };
+  config.middleware = [];
 
   // add your special config in here
   const bizConfig = {
@@ -29,6 +26,12 @@ export default (appInfo: EggAppInfo) => {
   config.mongoose = {
     url: 'mongodb://119.23.255.136/dev',
     options: {},
+  };
+
+  config.cors = {
+    credentials: true,
+    origin: 'http://127.0.0.1:9528', // 匹配规则  域名+端口  *则为全匹配
+    allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
   };
 
   config.cluster = {

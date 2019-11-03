@@ -14,9 +14,21 @@ export default class UserService extends Service {
     if (!tempUser) {
       tempUser = await User.save(params);
     } else {
-      tempUser = await ctx.model.User.update({ openId }, params);
+      await ctx.model.User.updateOne({ openId }, params);
     }
-    // const result = await User.save();
-    return tempUser;
+    return await ctx.model.User.findOne({ openId });
+  }
+
+  /**
+   * 登录
+   */
+  async findUser(params) {
+    const { ctx } = this;
+    console.log('查询条件', params);
+    const tempUser = await ctx.model.User.findOne(params);
+    return {
+      avatar: tempUser.avatar,
+      userName: tempUser.userName,
+    };
   }
 }

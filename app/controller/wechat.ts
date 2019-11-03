@@ -10,15 +10,19 @@ export default class WeChatController extends Controller {
    */
   async wxLogin() {
     const { ctx } = this;
-    const { header, service } = ctx;
+    const { header, service, session } = ctx;
     const { code } = header;
+
+    if (session.code === code) {
+      ctx.body = success('登录成功');
+    }
     // 解析code
     const result = await service.wechat.jscode2session(code);
     const { errcode } = result.data;
     if (errcode) {
       ctx.body = fail(result.data);
     } else {
-      ctx.body = success(result.data);
+      ctx.body = success('登录成功');
     }
   }
 
@@ -37,5 +41,13 @@ export default class WeChatController extends Controller {
     } else {
       ctx.body = fail(result);
     }
+  }
+
+  /**
+   * 获取微信用户的基本信息
+   */
+  async userInfo() {
+    const { ctx } = this;
+    ctx.body = success(ctx.session.userInfo);
   }
 }
