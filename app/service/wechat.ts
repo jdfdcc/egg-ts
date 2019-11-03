@@ -138,7 +138,7 @@ export default class WeChatService extends Service {
 
     const minisign = wxpay.paysignjsapimini(appId, nonce_str, _package, signType, timestamp, mchkey);
 
-    return { appId, partnerId: mchId, prepayId: prepay_id, nonceStr: nonce_str, timeStamp: timestamp, package: 'Sign=WXPay', paySign: minisign };
+    return { appId, partnerId: mchId, prepayId: prepay_id, nonceStr: nonce_str, timeStamp: timestamp, package: _package, paySign: minisign };
 
     // request({ url: url, method: 'POST', body: formData }, function (err, response, body) {
     //   if (!err && response.statusCode == 200) {
