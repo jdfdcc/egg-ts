@@ -74,9 +74,9 @@ export default class WeChatService extends Service {
   async pay(params) {
     const { ctx } = this;
     // 首先拿到前端传过来的参数
-    const orderCode = 'SH321312';
+    const orderCode = `SH${wxpay.createTimeStamp()}`;
     const money = '0.01';
-    const orderID = '321312';
+    const orderID = `SH${wxpay.createTimeStamp()}`;
     const openid = params.openId;
 
     console.log('APP传过来的参数是', orderCode + '----' + money + '------' + orderID + '----' + appId + '-----' + appSecret + '-----' + mchId + '-----' + mchkey);
