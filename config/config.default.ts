@@ -19,11 +19,13 @@ export default (appInfo: EggAppInfo) => {
     },
   };
 
+  // 数据库设置 @todo 为什么没有密码验证
   config.mongoose = {
     url: 'mongodb://119.23.255.136/dev',
     options: {},
   };
 
+  // 跨域设置
   config.cors = {
     credentials: true,
     origin: 'http://127.0.0.1:9528', // 匹配规则  域名+端口  *则为全匹配

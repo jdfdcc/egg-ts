@@ -14,7 +14,7 @@ export default class ClientController extends Controller {
       password: pwdMd5(password),
     });
 
-    console.log('user---', user);
+    console.log('user:', user);
 
     if (!user) {
       ctx.body = fail('用户名或者密码错误');

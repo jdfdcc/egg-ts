@@ -36,7 +36,7 @@ export default class WeChatService extends Service {
    * 解析接口
    */
   async decryptData(params) {
-    const { encryptedData, iv } = params;
+    const { encryptedData, iv, type = 'phone' } = params;
     if (!this.ctx.session.sessionKey) {
       return '请先登录';
     }
@@ -136,30 +136,13 @@ export default class WeChatService extends Service {
 
     const signType = 'MD5';
 
+    // 生成小程序支付参数
     const minisign = wxpay.paysignjsapimini(appId, nonce_str, _package, signType, timestamp, mchkey);
 
-    return { appId, partnerId: mchId, prepayId: prepay_id, nonceStr: nonce_str, timeStamp: timestamp, package: _package, paySign: minisign };
-
-    // request({ url: url, method: 'POST', body: formData }, function (err, response, body) {
-    //   if (!err && response.statusCode == 200) {
-    //     console.log(body);
-
-    //     xmlreader.read(body.toString('utf-8'), function (errors, response) {
-    //       if (null !== errors) {
-    //         console.log(errors)
-    //         return;
-    //       }
-    //       console.log('长度===', response.xml.prepay_id.text().length);
-    //       let prepay_id = response.xml.prepay_id.text();
-    //       console.log('解析后的prepay_id==', prepay_id);
-    //       // 将预支付订单和其他信息一起签名后返回给前端
-    //       const package = 'prepay_id=' + prepay_id;
-    //       const signType = 'MD5';
-    //       const minisign = wxpay.paysignjsapimini(appid, nonce_str, package, signType, timestamp, mchkey);
-    //       res.end(JSON.stringify({ status: '200', data: { appId: appid, partnerId: mchid, prepayId: prepay_id, nonceStr: nonce_str, timeStamp: timestamp, package: 'Sign=WXPay', paySign: minisign } }));
-
-    //     });
-    //   }
-    // });
+    // 返回对象
+    const tempObj = {
+      appId, partnerId: mchId, prepayId: prepay_id, nonceStr: nonce_str, timeStamp: timestamp, package: _package, paySign: minisign,
+    };
+    return tempObj;
   }
 }

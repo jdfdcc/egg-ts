@@ -27,12 +27,15 @@ export default function(app: Application) {
       type: Date,
       default: new Date(),
     },
-    money: Number, // 金额
-    extra: Object,
-    status: { // 订单状态1 表示未支付 2 表示已支付 3 表示已退款 4 表示已取消
+    money: {
+      type: Number,
+      default: 0,
+    }, // 金额
+    status: { // 订单状态 1 表示创建了订单未支付 2、表示已支付 3、表示已退款 4、表示已取消
       type: Number,
       default: 1,
     },
+    extra: Object,
     remark: String, // 用户备注
     createTime: {
       type: Date,

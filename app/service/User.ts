@@ -25,7 +25,13 @@ export default class UserService extends Service {
   async findUser(params) {
     const { ctx } = this;
     console.log('查询条件', params);
-    const tempUser = await ctx.model.User.findOne(params);
+    params.status = {
+      $ne: 0,
+    };
+    // 不能暴露密码
+    const tempUser = await ctx.model.User.findOne(params, {
+      password: 0,
+    });
     return {
       avatar: tempUser.avatar,
       userName: tempUser.userName,
