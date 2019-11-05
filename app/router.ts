@@ -18,7 +18,7 @@ export default (app: Application) => {
   // 订单接口
   router.get(`${api}/order/index`, controller.order.fail);
 
-  // -------------------- 微信相关--------------------
+  // -------------------- 微信相关 START--------------------
   // 微信登录接口 解析code
   router.post(`${api}/wx/wxlogin`, controller.wechat.wxLogin);
   // 解析数据 解析用户的手机号码
@@ -26,4 +26,7 @@ export default (app: Application) => {
   router.get(`${api}/wx/userInfo`, auth('WX'), controller.wechat.userInfo);
   // 支付
   router.post(`${api}/wx/pay`, auth('WX'), controller.wechat.pay);
+  // --------------------微信相关 END -----------------------
+  // --------------------测试相关 START -----------------------
+  // --------------------测试相关 END -----------------------
 };

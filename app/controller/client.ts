@@ -17,8 +17,7 @@ export default class ClientController extends Controller {
       loginName: userName,
       password: pwdMd5(password),
     });
-
-    console.log('user---', user);
+    console.log('user:', user);
 
     if (!user) {
       ctx.body = fail('用户名或者密码错误');
@@ -30,7 +29,7 @@ export default class ClientController extends Controller {
 
   async userInfo() {
     const { ctx } = this;
-    console.log('ctx.session', ctx.session.userInfo);
+    console.log('ctx.session:', ctx.session.userInfo);
     ctx.body = success({
       roles: [ 'admin' ],
       user: {
