@@ -6,11 +6,15 @@ import { pwdMd5 } from '../utils/tools';
 export default class ClientController extends Controller {
   async login() {
     const { ctx } = this;
-    const { username, password } = ctx.request.body;
+    const { userName, password } = ctx.request.body;
+    if (!userName || !password) {
+      ctx.body = fail('参数错误');
+      return;
+    }
     console.log('password:', pwdMd5(password));
-    console.log('username:', username);
+    console.log('userName:', userName);
     const user = await ctx.service.user.findUser({
-      loginName: username,
+      loginName: userName,
       password: pwdMd5(password),
     });
 
@@ -29,7 +33,10 @@ export default class ClientController extends Controller {
     console.log('ctx.session', ctx.session.userInfo);
     ctx.body = success({
       roles: [ 'admin' ],
-      user: ctx.session.userInfo,
+      user: {
+        ...ctx.session.userInfo,
+        name: ctx.session.userInfo.userName,
+      },
     });
   }
 }
