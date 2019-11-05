@@ -7,13 +7,11 @@ export default class ClientController extends Controller {
   async login() {
     const { ctx } = this;
     const { username, password } = ctx.request.body;
-    console.log('password:', pwdMd5(password));
     console.log('username:', username);
     const user = await ctx.service.user.findUser({
       loginName: username,
       password: pwdMd5(password),
     });
-
     console.log('user:', user);
 
     if (!user) {
@@ -26,7 +24,7 @@ export default class ClientController extends Controller {
 
   async userInfo() {
     const { ctx } = this;
-    console.log('ctx.session', ctx.session.userInfo);
+    console.log('ctx.session:', ctx.session.userInfo);
     ctx.body = success({
       roles: [ 'admin' ],
       user: ctx.session.userInfo,

@@ -20,7 +20,7 @@ export default class UserService extends Service {
   }
 
   /**
-   * 登录
+   * 查询用户信息
    */
   async findUser(params) {
     const { ctx } = this;

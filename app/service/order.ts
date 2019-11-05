@@ -5,20 +5,20 @@ export default class OrderService extends Service {
   /**
    * 创建订单
    */
-  async create(params) {},
+  // async create(params) {},
 
   /**
    * 删除订单
    */
-  async delete() {},
+  // async delete() {},
 
   /**
    * 修改订单
    */
-  async update() {},
+  // async update() {},
 
   /**
    * 查询订单
    */
-  async query() {}
+  // async query() {}
 }

@@ -9,17 +9,16 @@ export default class CommonController extends Controller {
    */
   async getList() {
     const { ctx } = this;
-    const result = await ctx.model.User.find({});
+    const { modelName } = ctx.query;
+    const result = await ctx.model[modelName].find({});
     ctx.body = success(result);
   }
 
   /**
    * 公共保存或者修改的接口
    */
-  async save(prams) {
+  async save() {
     const { ctx } = this;
-    const SaveUser = new ctx.model.User(prams);
-    SaveUser.save();
     ctx.body = fail('我是失败的返回');
   }
 

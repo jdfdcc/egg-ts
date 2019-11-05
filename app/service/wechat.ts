@@ -36,7 +36,7 @@ export default class WeChatService extends Service {
    * 解析接口
    */
   async decryptData(params) {
-    const { encryptedData, iv, type = 'phone' } = params;
+    const { encryptedData, iv } = params;
     if (!this.ctx.session.sessionKey) {
       return '请先登录';
     }
