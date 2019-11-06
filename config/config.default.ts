@@ -25,6 +25,15 @@ export default (appInfo: EggAppInfo) => {
     options: {},
   };
 
+  config.session = {
+    key: 'SESSION_ID',
+    maxAge: 60 * 10 * 1000, // 10 分钟
+    // maxAge: 11000, // 10 秒
+    httpOnly: true,
+    encrypt: true,
+    renew: true,
+  };
+
   // 跨域设置
   config.cors = {
     credentials: true,

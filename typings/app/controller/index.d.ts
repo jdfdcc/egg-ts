@@ -4,6 +4,7 @@
 import 'egg';
 import ExportClient from '../../../app/controller/client';
 import ExportCommon from '../../../app/controller/common';
+import ExportDemo from '../../../app/controller/demo';
 import ExportHome from '../../../app/controller/home';
 import ExportOrder from '../../../app/controller/order';
 import ExportWechat from '../../../app/controller/wechat';
@@ -12,6 +13,7 @@ declare module 'egg' {
   interface IController {
     client: ExportClient;
     common: ExportCommon;
+    demo: ExportDemo;
     home: ExportHome;
     order: ExportOrder;
     wechat: ExportWechat;

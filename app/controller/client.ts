@@ -33,6 +33,7 @@ export default class ClientController extends Controller {
     ctx.body = success({
       roles: [ 'admin' ],
       user: {
+        userid: '2312',
         ...ctx.session.userInfo,
         name: ctx.session.userInfo.userName,
       },
