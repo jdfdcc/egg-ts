@@ -5,7 +5,7 @@ export default (app: Application) => {
   const { controller, router, middleware } = app;
   const { auth } = middleware;
   // 公共接口
-  router.get(`${api}/common/getList`, controller.common.getList);
+  router.post(`${api}/common/getList`, controller.common.getList);
   router.post(`${api}/common/save`, controller.common.save);
   router.post(`${api}/common/delete`, controller.common.delete);
   router.get(`${api}/home/index`, controller.home.success);

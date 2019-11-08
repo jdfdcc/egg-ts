@@ -9,8 +9,31 @@ export default class CommonController extends Controller {
    */
   async getList() {
     const { ctx } = this;
-    const { modelName } = ctx.query;
-    const result = await ctx.model[modelName].find({});
+    const { request } = ctx;
+    const { _model, query = {}, filters = [] } = request.body;
+    if (!_model) {
+      ctx.body = fail('请设置_model参数');
+      return;
+    }
+    const tempFilter = {};
+    if (Array.isArray(filters)) {
+      filters.map((key: string) => {
+        tempFilter[key] = 1;
+        return key;
+      });
+    } else {
+      ctx.body = fail('请选择你要查询的字段');
+      return;
+    }
+    const { pageSize = 10, pageNum = 1, ...otherQuery } = query;
+    console.log('model', ctx.model);
+    const tempQuery = {};
+    for (const key in otherQuery) {
+      if (/^\/.*\/$/.test(otherQuery[key])) {
+        tempQuery[key] = new RegExp(otherQuery[key]);
+      }
+    }
+    const result = await ctx.model[_model].find(tempQuery, tempFilter).skip(pageSize * (pageNum - 1)).limit(pageSize);
     ctx.body = success(result);
   }
 
