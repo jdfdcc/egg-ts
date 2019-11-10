@@ -11,6 +11,7 @@ export default function(app: Application) {
     },
     priceId: String, // 商品对应的价格信息
     shopNo: String, // 商品编号
+    videoUrl: String,
     name: String, // 商品名称
     labels: Array, // 商品标签
     mainImage: String, // 商品的主图
@@ -24,6 +25,9 @@ export default function(app: Application) {
     onLine: { // 是否在售 1 在售 0 下线
       type: Number,
       default: 1,
+    },
+    sort: { // 排序
+      type: Number,
     },
     status: { // 商品的状态 1 正常 0 删除
       type: Number,
