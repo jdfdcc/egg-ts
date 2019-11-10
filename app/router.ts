@@ -7,7 +7,8 @@ export default (app: Application) => {
   // 公共接口
   router.post(`${api}/common/getList`, controller.common.getList);
   router.post(`${api}/common/save`, controller.common.save);
-  router.post(`${api}/common/delete`, controller.common.delete);
+  router.post(`${api}/common/queryOne`, controller.common.queryOne);
+
   router.get(`${api}/home/index`, controller.home.success);
   router.get(`${api}/home/fail`, controller.home.fail);
 

@@ -25,15 +25,7 @@ export default class CommonController extends Controller {
       ctx.body = fail('请选择你要查询的字段');
       return;
     }
-    const { pageSize = 10, pageNum = 1, ...otherQuery } = query;
-    console.log('model', ctx.model);
-    const tempQuery = {};
-    for (const key in otherQuery) {
-      if (/^\/.*\/$/.test(otherQuery[key])) {
-        tempQuery[key] = new RegExp(otherQuery[key]);
-      }
-    }
-    const result = await ctx.model[_model].find(tempQuery, tempFilter).skip(pageSize * (pageNum - 1)).limit(pageSize);
+    const result = await ctx.service.common.queryList(_model, query, tempFilter);
     ctx.body = success(result);
   }
 
@@ -42,14 +34,29 @@ export default class CommonController extends Controller {
    */
   async save() {
     const { ctx } = this;
-    ctx.body = fail('我是失败的返回');
+    const { request } = ctx;
+    const { _id, _model, ...other } = request.body;
+    const result = await ctx.service.common.createOrUpdate(_model, _id, other);
+    if (result) {
+      ctx.body = success(result);
+    } else {
+      ctx.body = fail('失败了');
+    }
   }
 
   /**
    * 公共删除的接口
    */
-  async delete() {
+  async queryOne() {
     const { ctx } = this;
-    ctx.body = fail('我是失败的返回');
+    const { request } = ctx;
+    const { params, _model } = request.body;
+    console.log(params, _model);
+    const result = await ctx.service.common.queryOne(_model, params);
+    if (result) {
+      ctx.body = success(result);
+    } else {
+      ctx.body = fail('失败了');
+    }
   }
 }
