@@ -57,6 +57,7 @@ export default class CommonService extends Service {
       params.uuid = uuid();
       params.updateTime = new Date();
       const Model = new ModelClass(params);
+      console.log('params', params);
       result = await Model.save();
     }
     return result;

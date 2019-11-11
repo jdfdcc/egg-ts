@@ -10,13 +10,12 @@ export default function(app: Application) {
       unique: true,
       required: true,
     },
-    name:  { // 用户选择展示
+    code:  { // 编号
       type: String,
       required: true,
     },
-    code:  { // 用于代码使用
+    name:  { // 类型
       type: String,
-      unique: true,
       required: true,
     },
     sort: { // 排序
@@ -26,7 +25,7 @@ export default function(app: Application) {
       type: Number,
       default: 1,
     },
-    remark: String, // 用户备注
+    remark: String, // 备注
     createTime: {
       type: Date,
       default: new Date(),

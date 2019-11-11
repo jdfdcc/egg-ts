@@ -10,6 +10,7 @@ export default function(app: Application) {
       required: true,
     },
     priceId: String, // 商品对应的价格信息
+    categoryId: String, // 商品类目
     shopNo: String, // 商品编号
     videoUrl: String,
     name: String, // 商品名称

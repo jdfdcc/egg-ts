@@ -1,4 +1,4 @@
-import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
+import { EggAppConfig, EggAppInfo, PowerPartial, Context } from 'egg';
 
 export default (appInfo: EggAppInfo) => {
   const config = {} as PowerPartial<EggAppConfig>;
@@ -37,7 +37,10 @@ export default (appInfo: EggAppInfo) => {
   // 跨域设置
   config.cors = {
     credentials: true,
-    origin: 'http://127.0.0.1:9528', // 匹配规则  域名+端口  *则为全匹配
+    origin: (ctx: Context) => {
+      // console.log();
+      return ctx.request.header.origin;
+    }, // 匹配规则  域名+端口  *则为全匹配
     allowMethods: 'GET,HEAD,PUT,POST,DELETE,PATCH',
   };
 
