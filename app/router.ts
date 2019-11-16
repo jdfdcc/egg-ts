@@ -3,8 +3,7 @@ const api = '/api';
 
 export default (app: Application) => {
   const { controller, router, middleware } = app;
-  const { auth } = middleware;
-  const xmlparser = require('express-xml-bodyparser');
+  const { auth, xmlparse } = middleware;
 
   // 公共接口
   router.post(`${api}/common/getList`, controller.common.getList);
@@ -33,6 +32,6 @@ export default (app: Application) => {
   // --------------------测试相关 START -----------------------
   router.post(`${api}/order/create`, auth('WX'), controller.order.create);
   router.post(`${api}/order/pay`, auth('WX'), controller.order.payOrder);
-  router.post(`${api}/order/payresult`, xmlparser({ trim: false, explicitArray: false }), controller.order.payresult);
+  router.post(`${api}/order/payresult`, xmlparse, controller.order.payresult);
   // --------------------测试相关 END -----------------------
 };
