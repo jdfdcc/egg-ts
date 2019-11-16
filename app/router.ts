@@ -4,6 +4,8 @@ const api = '/api';
 export default (app: Application) => {
   const { controller, router, middleware } = app;
   const { auth } = middleware;
+  const xmlparser = require('express-xml-bodyparser');
+
   // 公共接口
   router.post(`${api}/common/getList`, controller.common.getList);
   router.post(`${api}/common/save`, controller.common.save);
@@ -17,7 +19,7 @@ export default (app: Application) => {
   router.get(`${api}/client/user/info`, auth('client'), controller.client.userInfo);
 
   // 订单接口
-  router.get(`${api}/order/index`, controller.order.fail);
+  // router.get(`${api}/order/index`, controller.order.fail);
 
   // -------------------- 微信相关 START--------------------
   // 微信登录接口 解析code
@@ -29,5 +31,8 @@ export default (app: Application) => {
   router.post(`${api}/wx/pay`, auth('WX'), controller.wechat.pay);
   // --------------------微信相关 END -----------------------
   // --------------------测试相关 START -----------------------
+  router.post(`${api}/order/create`, auth('WX'), controller.order.create);
+  router.post(`${api}/order/pay`, auth('WX'), controller.order.payOrder);
+  router.post(`${api}/order/payresult`, xmlparser({ trim: false, explicitArray: false }), controller.order.payresult);
   // --------------------测试相关 END -----------------------
 };

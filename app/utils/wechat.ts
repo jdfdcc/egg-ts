@@ -9,9 +9,9 @@ export const mchId = '1515299391';
 // 7c88a050fc54784c28c1b7b0231096ad
 export const mchkey = 'zqAmlwL6OXfdlfKBDnBOe807AaaSe7Uq';
 
-export const remoteAddress = '192.168.1.2';
+export const remoteAddress = '119.23.255.136';
 
-export const wxurl = 'https://jerome.chaobenxueyuan.com/api/wx/index';
+export const wxurl = 'https://jerome.chaobenxueyuan.com/api/order/payresult';
 
 /**
  * 解析小程序的加密信息

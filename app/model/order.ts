@@ -23,6 +23,14 @@ export default function(app: Application) {
       type: String,
       required: true,
     },
+    priceId: { // 商品所选择的价格ID
+      type: String,
+      required: true,
+    },
+    priceItemId: { // 商品所选择的价格对应的梯度ID
+      type: String,
+      required: true,
+    },
     buyTime: { // 订单时间
       type: Date,
       default: new Date(),

@@ -1,5 +1,4 @@
 import { EggAppConfig, EggAppInfo, PowerPartial, Context } from 'egg';
-
 export default (appInfo: EggAppInfo) => {
   const config = {} as PowerPartial<EggAppConfig>;
 

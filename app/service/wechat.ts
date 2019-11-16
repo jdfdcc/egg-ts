@@ -73,11 +73,13 @@ export default class WeChatService extends Service {
    */
   async pay(params) {
     const { ctx } = this;
+    // text, orderNo, orderId
+    const { money, openId, orderId, orderNo, body } = params;
     // 首先拿到前端传过来的参数
-    const orderCode = `SH${wxpay.createTimeStamp()}`;
-    const money = '0.01';
-    const orderID = `SH${wxpay.createTimeStamp()}`;
-    const openid = params.openId;
+    const orderCode = orderNo; // `SH${wxpay.createTimeStamp()}`;
+    // const money = money;
+    const orderID = orderId; // `SH${wxpay.createTimeStamp()}`;
+    const openid = openId;
 
     console.log('APP传过来的参数是', orderCode + '----' + money + '------' + orderID + '----' + appId + '-----' + appSecret + '-----' + mchId + '-----' + mchkey);
 
@@ -86,7 +88,7 @@ export default class WeChatService extends Service {
     const mch_id = mchId;
     const nonce_str = wxpay.createNonceStr();
     const timestamp = wxpay.createTimeStamp();
-    const body = '测试微信支付';
+    // const body = body;
     const out_trade_no = orderCode;
     const total_fee = wxpay.getmoney(money);
     const spbill_create_ip = remoteAddress; // 支持IPV4和IPV6两种格式的IP地址。调用微信支付API的机器IP
@@ -100,7 +102,7 @@ export default class WeChatService extends Service {
     // 组装xml数据
     let formData = '<xml>';
     formData += '<appid>' + appId + '</appid>';  // appid
-    formData += '<body><![CDATA[' + '测试微信支付' + ']]></body>';
+    formData += '<body><![CDATA[' + body + ']]></body>';
     formData += '<mch_id>' + mch_id + '</mch_id>';  // 商户号
     formData += '<nonce_str>' + nonce_str + '</nonce_str>'; // 随机字符串，不长于32位。
     formData += '<notify_url>' + notify_url + '</notify_url>';

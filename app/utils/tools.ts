@@ -19,7 +19,17 @@ export const pwdMd5 = (pwd: string) => {
   const utility = require('utility');
   return utility.md5(pwd);
 };
+
+/**
+ * 生成订单NO
+ * @param pwd
+ */
+export const createOrderNo = () => {
+  return `O_NO_${new Date().getTime()}_${uuid(4)}`;
+};
+
 export default {
   uuid,
   pwdMd5,
+  createOrderNo,
 };

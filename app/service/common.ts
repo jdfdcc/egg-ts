@@ -13,7 +13,7 @@ export default class CommonService extends Service {
       return false;
     }
 
-    const { pageSize = 10, current = 1, total, ...otherQuery } = query;
+    const { pageSize = 10, current = 1, pageNum = 1, total, ...otherQuery } = query;
     const tempQuery = {
       status: {
         $ne: 0,
@@ -27,13 +27,18 @@ export default class CommonService extends Service {
         tempQuery[key] = otherQuery[key];
       }
     }
-    const data = await this.ctx.model[_model].find(tempQuery, filters);
-    const result = await this.ctx.model[_model].find(tempQuery, filters).sort({ updateTime: -1 }).skip(pageSize * (current - 1)).limit(pageSize);
+    console.log('tempQuery:', tempQuery);
+    console.log('filters:', filters);
+    const totalNum = await this.ctx.model[_model].count(tempQuery);
+    const result = await this.ctx.model[_model].find(tempQuery, filters, {
+      skip: pageSize * (current - 1),
+      limit: pageSize,
+    }).sort({ updateTime: -1 });
     return {
       pagination: {
         current,
         pageSize,
-        total: data.length,
+        total: totalNum,
       },
       list: result,
     };
