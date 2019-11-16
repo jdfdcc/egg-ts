@@ -32,6 +32,6 @@ export default (app: Application) => {
   // --------------------测试相关 START -----------------------
   router.post(`${api}/order/create`, auth('WX'), controller.order.create);
   router.post(`${api}/order/pay`, auth('WX'), controller.order.payOrder);
-  router.post(`${api}/order/payresult`, xmlparse, controller.order.payresult);
+  router.post(`${api}/order/payresult`, xmlparse(), controller.order.payresult);
   // --------------------测试相关 END -----------------------
 };
