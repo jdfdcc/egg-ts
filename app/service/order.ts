@@ -76,9 +76,17 @@ export default class OrderService extends Service {
   }
 
   /**
-   * 修改订单
+   * 修改订单的状态, 支付成功
+   * _extra 存在于支付中间表
    */
-  // async update() {},
+  async paySuccess(_id, _extra) {
+    const result = await this.ctx.model.Order.updateOne({
+      _id,
+    }, {
+      status: 2,
+    });
+    return result;
+  }
 
   /**
    * 查询订单

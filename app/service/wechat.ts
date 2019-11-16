@@ -74,14 +74,14 @@ export default class WeChatService extends Service {
   async pay(params) {
     const { ctx } = this;
     // text, orderNo, orderId
-    const { money, openId, orderId, orderNo, body } = params;
+    const { money, openId, orderId, body } = params;
     // 首先拿到前端传过来的参数
-    const orderCode = orderNo; // `SH${wxpay.createTimeStamp()}`;
+    const orderCode = orderId; // `SH${wxpay.createTimeStamp()}`;
     // const money = money;
-    const orderID = orderId; // `SH${wxpay.createTimeStamp()}`;
+    // const orderID = orderId; // `SH${wxpay.createTimeStamp()}`;
     const openid = openId;
 
-    console.log('APP传过来的参数是', orderCode + '----' + money + '------' + orderID + '----' + appId + '-----' + appSecret + '-----' + mchId + '-----' + mchkey);
+    console.log('APP传过来的参数是', orderCode + '----' + money + '----' + appId + '-----' + appSecret + '-----' + mchId + '-----' + mchkey);
 
     // 首先生成签名sign
     // appid

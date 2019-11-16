@@ -49,18 +49,45 @@ export default class OrderController extends Controller {
 
   /**
    * 微信支付成功的回掉地址
+   * { appid: 'wxcb03144d55fc82c4',
+   * bank_type: 'CFT',
+   * cash_fee: '1',
+   * fee_type: 'CNY',
+   * is_subscribe: 'N',
+   * mch_id: '1515299391',
+   * nonce_str: 'fk8udswk5an',
+   * openid: 'o2ns348BXkxgVfINjJlYCNPpgwxY',
+   * out_trade_no: 'O_NO_1573892637360_38Ni',
+   * result_code: 'SUCCESS',
+   * return_code: 'SUCCESS',
+   * sign: '6BCFEBF756D71DC02F47F7882CA9CE5A',
+   * time_end: '20191116162426',
+   * total_fee: '1',
+   * trade_type: 'JSAPI',
+   * transaction_id: '4200000422201911163433748485' }
+   *
+   *
+   * <xml>
+   *   <return_code><![CDATA[SUCCESS]]></return_code>
+   *   <return_msg><![CDATA[OK]]></return_msg>
+   * </xml>
    */
   async payresult() {
     const { ctx } = this;
-    console.log('ctx.req', ctx.req);
     // tslint:disable-next-line:no-string-literal
     console.log('ctx.req.body', ctx.req['body'].xml);
     // tslint:disable-next-line:no-string-literal
-    console.log('ctx.req.rawBody', ctx.req['rawBody']);
-    console.log('ctx.request.body', ctx.request.body);
-    const jsonData = ctx.request.body.xml;
-    if (jsonData.result_code === 'SUCCESS') {
+    const result = ctx.req['body'].xml;
+    if (result.result_code === 'SUCCESS') {
+      const { out_trade_no } = result;
+      const payRes = await ctx.service.order.paySuccess(out_trade_no, result);
       console.log('i m ok');
+      // 微信支付成功之后的回调
+      if (payRes) {
+        ctx.res.end('<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>');
+      } else {
+        return;
+      }
     }
 
   }
