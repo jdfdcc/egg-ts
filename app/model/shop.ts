@@ -9,8 +9,14 @@ export default function(app: Application) {
       unique: true,
       required: true,
     },
-    priceId: String, // 商品对应的价格信息
-    categoryId: String, // 商品类目
+    priceId: { // 商品对应的价格信息
+      type: mongoose.Types.ObjectId,
+      required: true,
+    },
+    categoryId: { // 商品类目
+      type: mongoose.Types.ObjectId,
+      required: true,
+    },
     shopNo: String, // 商品编号
     videoUrl: String,
     name: String, // 商品名称

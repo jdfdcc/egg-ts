@@ -5,6 +5,16 @@ import { success, fail } from '../utils/handler';
 export default class OrderController extends Controller {
 
   /**
+   * 查询订单列表
+   */
+  async queryList() {
+    const { ctx } = this;
+    const { request } = ctx;
+    const result = await ctx.service.order.queryList(request.body);
+    ctx.body = success(result);
+  }
+
+  /**
    * 创建订单
    */
   async create() {

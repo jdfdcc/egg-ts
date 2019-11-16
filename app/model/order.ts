@@ -16,15 +16,15 @@ export default function(app: Application) {
       required: true,
     },
     userId: { // 订单对应用户的_id
-      type: String,
+      type: mongoose.Types.ObjectId,
       required: true,
     },
     shopId: { // 商品ID
-      type: String,
+      type: mongoose.Types.ObjectId,
       required: true,
     },
     priceId: { // 商品所选择的价格ID
-      type: String,
+      type: mongoose.Types.ObjectId,
       required: true,
     },
     priceItemId: { // 商品所选择的价格对应的梯度ID
@@ -43,6 +43,7 @@ export default function(app: Application) {
       type: Number,
       default: 1,
     },
+    wxPayInfo: Object, // 微信支付返回信息
     extra: Object,
     remark: String, // 用户备注
     createTime: {

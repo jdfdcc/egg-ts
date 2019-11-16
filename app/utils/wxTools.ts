@@ -18,7 +18,7 @@ function raw(args) {
 export default {
   // 把金额转为分
   getmoney: money => {
-    return parseFloat(money) * 100;
+    return Math.round(parseFloat(money) * 100);
   },
 
   // 随机字符串产生函数

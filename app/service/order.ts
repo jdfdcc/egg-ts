@@ -1,8 +1,151 @@
 import { Service } from 'egg';
-import { createOrderNo } from '../utils/tools';
+import { createOrderNo, clearObj } from '../utils/tools';
 
 // 订单信息
 export default class OrderService extends Service {
+
+  /**
+   * 创建记录
+   */
+  async queryList(query) {
+    const { pageSize = 10, current = 1, shopName = '', userName = '', orderNo = '', status, } = query;
+    let match = {
+      'shopDetail.name': new RegExp(`.*${shopName}.*`, 'i'),
+      'userDetail.userName': new RegExp(`.*${userName}.*`, 'i'),
+      orderNo: new RegExp(`.*${orderNo}.*`),
+      status: status ? +status : undefined,
+    };
+    match = clearObj(match);
+    // console.log(otherQuery);
+    // const totalNum = await this.ctx.model.Order.countDocuments(match);
+    // const totalNum = await this.ctx.model.Order.aggregate([
+    //   {
+    //     $lookup: {
+    //       from: 'shops',
+    //       localField: 'shopId',
+    //       foreignField: '_id',
+    //       as: 'shopDetail',
+    //     },
+    //   },
+    //   {
+    //     $lookup: {
+    //       from: 'users',
+    //       localField: 'userId',
+    //       foreignField: '_id',
+    //       as: 'userDetail',
+    //     },
+    //   },
+    //   {
+    //     $unwind: '$userDetail',
+    //   },
+    //   {
+    //     $unwind: '$shopDetail',
+    //   },
+    //   {
+    //     $match: match,
+    //   },
+    // ]);
+
+    // console.log('totalNum:', totalNum);
+    const totals = await this.ctx.model.Order.aggregate([
+      {
+        $lookup: {
+          from: 'shops',
+          localField: 'shopId',
+          foreignField: '_id',
+          as: 'shopDetail',
+        },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'userId',
+          foreignField: '_id',
+          as: 'userDetail',
+        },
+      },
+      {
+        $unwind: '$userDetail',
+      },
+      {
+        $unwind: '$shopDetail',
+      },
+      {
+        $match: match,
+      },
+      {
+        $project: {
+          orderNo: 1,
+        },
+      },
+    ]);
+    // 聚合查询
+    const result = await this.ctx.model.Order.aggregate([
+      {
+        $lookup: {
+          from: 'shops',
+          localField: 'shopId',
+          foreignField: '_id',
+          as: 'shopDetail',
+        },
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'userId',
+          foreignField: '_id',
+          as: 'userDetail',
+        },
+      },
+      {
+        $unwind: '$userDetail',
+      },
+      {
+        $unwind: '$shopDetail',
+      },
+      {
+        $match: match,
+      },
+      {
+        $project: {
+          orderNo: 1,
+          userId: 1,
+          shopId: 1,
+          money: 1,
+          status: 1,
+          createTime: 1,
+          remark: 1,
+          shopDetail: {
+            _id: 1,
+            name: 1,
+          },
+          userDetail: {
+            userName: 1,
+            _id: 1,
+          },
+        },
+      },
+      {
+        $skip: pageSize * (current - 1),
+      },
+      {
+        $limit: pageSize,
+      },
+    ]);
+
+    console.log('result:', result);
+
+    // 处理数据信息
+    return {
+      pagination: {
+        current,
+        pageSize,
+        total: totals.length,
+      },
+      list: result,
+    };
+  }
+
   /**
    * 创建订单
    */
@@ -50,7 +193,7 @@ export default class OrderService extends Service {
   }
 
   /**
-   * 删除订单
+   * 支付订单
    */
   async pay(orderId) {
     const { ctx } = this;
@@ -80,16 +223,14 @@ export default class OrderService extends Service {
    * _extra 存在于支付中间表
    */
   async paySuccess(_id, _extra) {
+    // 订单只能从未支付到已支付的状态
     const result = await this.ctx.model.Order.updateOne({
       _id,
+      status: 1,
     }, {
       status: 2,
+      wxPayInfo: _extra,
     });
     return result;
   }
-
-  /**
-   * 查询订单
-   */
-  // async query() {}
 }

@@ -1,7 +1,7 @@
 
 import { Controller } from 'egg';
-import { success, fail } from '../utils/handler';
-import { pwdMd5 } from '../utils/tools';
+import { success, fail } from '../../utils/handler';
+import { pwdMd5 } from '../../utils/tools';
 
 export default class ClientController extends Controller {
   async login() {

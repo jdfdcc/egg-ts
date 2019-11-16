@@ -1,8 +1,7 @@
 
 import { Controller } from 'egg';
-import { fail, success } from '../utils/handler';
+import { fail, success } from '../../utils/handler';
 
-// 文档地址 https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/login/auth.code2Session.html
 export default class WeChatController extends Controller {
 
   /**
