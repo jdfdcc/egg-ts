@@ -40,7 +40,7 @@ export const createOrderNo = () => {
 
 // 去除为null和undefind的对象
 export const clearObj = (obj: any) => {
-  for(const key in obj) {
+  for (const key in obj) {
     if (obj[key] === undefined || obj[key] === null) {
       delete obj[key];
     }
