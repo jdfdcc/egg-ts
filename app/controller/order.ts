@@ -53,6 +53,7 @@ export default class OrderController extends Controller {
   async payresult() {
     let data = '';
     const { ctx } = this;
+    console.log('微信支付成功的回调-----', ctx);
     const xml2js = require('xml2js');
     ctx.req.setEncoding('utf8');
     ctx.req.on('data', chunk => {
