@@ -51,21 +51,13 @@ export default class OrderController extends Controller {
    * 微信支付成功的回掉地址
    */
   async payresult() {
-    let data = '';
     const { ctx } = this;
-    const xml2js = require('xml2js');
-    ctx.req.setEncoding('utf8');
-    ctx.req.on('data', chunk => {
-      data += chunk;
-    });
-
-    console.log('微信支付成功的回调-----', data);
-    ctx.req.on('end', () => {
-      xml2js(data, { explicitArray: false }, (_err: any, json: any) => {
-        console.log('json', json); // 这里的json便是xml转为json的内容
-        ctx.body = 'success';
-      });
-    });
+    console.log(ctx.req);
+    console.log(ctx.request);
+    const jsonData = ctx.request.body.xml;
+    if (jsonData.result_code === 'SUCCESS') {
+      console.log('i m ok');
+    }
 
   }
 }
