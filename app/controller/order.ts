@@ -52,8 +52,12 @@ export default class OrderController extends Controller {
    */
   async payresult() {
     const { ctx } = this;
-    console.log(ctx.req);
-    console.log(ctx.request);
+    console.log('ctx.req', ctx.req);
+    // tslint:disable-next-line:no-string-literal
+    console.log('ctx.req.body', ctx.req['body'].xml);
+    // tslint:disable-next-line:no-string-literal
+    console.log('ctx.req.rawBody', ctx.req['rawBody']);
+    console.log('ctx.request.body', ctx.request.body);
     const jsonData = ctx.request.body.xml;
     if (jsonData.result_code === 'SUCCESS') {
       console.log('i m ok');
