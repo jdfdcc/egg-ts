@@ -1,7 +1,6 @@
 
 import { Controller } from 'egg';
 import { success, fail } from '../utils/handler';
-import xml2js from 'xml2js';
 
 export default class OrderController extends Controller {
 
@@ -54,12 +53,13 @@ export default class OrderController extends Controller {
   async payresult() {
     let data = '';
     const { ctx } = this;
+    const xml2js = require('xml2js');
     ctx.req.setEncoding('utf8');
     ctx.req.on('data', chunk => {
       data += chunk;
     });
     ctx.req.on('end', () => {
-      xml2js(data, { explicitArray: false }, (err, json) => {
+      xml2js(data, { explicitArray: false }, (_err: any, json: any) => {
         console.log('json', json); // 这里的json便是xml转为json的内容
         ctx.body = 'success';
       });
