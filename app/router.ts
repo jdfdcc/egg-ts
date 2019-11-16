@@ -3,7 +3,7 @@ const api = '/api';
 
 export default (app: Application) => {
   const { controller, router, middleware } = app;
-  const { auth, xmlparse } = middleware;
+  const { auth } = middleware;
   const xmlparser = require('express-xml-bodyparser');
   // 公共接口
   router.post(`${api}/common/getList`, controller.common.getList);
