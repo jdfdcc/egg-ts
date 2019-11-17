@@ -6,6 +6,7 @@ import ExportCategory from '../../../app/model/category';
 import ExportOrder from '../../../app/model/order';
 import ExportPrice from '../../../app/model/price';
 import ExportShop from '../../../app/model/shop';
+import ExportTime from '../../../app/model/time';
 import ExportUser from '../../../app/model/user';
 
 declare module 'egg' {
@@ -14,6 +15,7 @@ declare module 'egg' {
     Order: ReturnType<typeof ExportOrder>;
     Price: ReturnType<typeof ExportPrice>;
     Shop: ReturnType<typeof ExportShop>;
+    Time: ReturnType<typeof ExportTime>;
     User: ReturnType<typeof ExportUser>;
   }
 }

@@ -23,11 +23,11 @@ export default function(app: Application) {
       type: mongoose.Types.ObjectId,
       required: true,
     },
-    priceId: { // 商品所选择的价格ID
-      type: mongoose.Types.ObjectId,
+    priceDetail: { // 商品所选择的价格梯度详情
+      type: Object,
       required: true,
     },
-    priceItemId: { // 商品所选择的价格对应的梯度ID
+    levelId: { // 商品所选择的价格对应的梯度ID
       type: String,
       required: true,
     },

@@ -16,37 +16,6 @@ export default class OrderService extends Service {
       status: status ? +status : undefined,
     };
     match = clearObj(match);
-    // console.log(otherQuery);
-    // const totalNum = await this.ctx.model.Order.countDocuments(match);
-    // const totalNum = await this.ctx.model.Order.aggregate([
-    //   {
-    //     $lookup: {
-    //       from: 'shops',
-    //       localField: 'shopId',
-    //       foreignField: '_id',
-    //       as: 'shopDetail',
-    //     },
-    //   },
-    //   {
-    //     $lookup: {
-    //       from: 'users',
-    //       localField: 'userId',
-    //       foreignField: '_id',
-    //       as: 'userDetail',
-    //     },
-    //   },
-    //   {
-    //     $unwind: '$userDetail',
-    //   },
-    //   {
-    //     $unwind: '$shopDetail',
-    //   },
-    //   {
-    //     $match: match,
-    //   },
-    // ]);
-
-    // console.log('totalNum:', totalNum);
     const totals = await this.ctx.model.Order.aggregate([
       {
         $lookup: {
@@ -113,6 +82,8 @@ export default class OrderService extends Service {
           shopId: 1,
           money: 1,
           status: 1,
+          priceDetail: 1,
+          levelId: 1,
           createTime: 1,
           remark: 1,
           shopDetail: {
@@ -181,8 +152,8 @@ export default class OrderService extends Service {
       orderNo,
       userId: ctx.session.userInfo._id,
       shopId,
-      priceId: preceDetail.id,
-      priceItemId: priceId,
+      priceDetail: preceDetail,
+      levelId: priceId,
       money: priceItem.price,
       extra: {
         shopDetail,
@@ -232,10 +203,10 @@ export default class OrderService extends Service {
       wxPayInfo: _extra,
     });
     // 增加小伙的购买时长表
-    const { priceId, priceItemId } = result;
+    const { priceDetail, levelId } = result;
     console.log('order-----:', result);
-    console.log('priceId:', priceId);
-    console.log('priceId:', priceItemId);
+    console.log('priceId:', priceDetail);
+    console.log('priceId:', levelId);
     return result;
   }
 }
