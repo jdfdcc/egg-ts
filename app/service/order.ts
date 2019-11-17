@@ -250,7 +250,7 @@ export default class OrderService extends Service {
       }
 
       // ctx.model.Time.
-      const result = await ctx.service.common.createOrUpdate('Order', null, {
+      const result = await ctx.service.common.createOrUpdate('Time', null, {
         priceDetail,
         startTime: new Date(),
         endTime,
