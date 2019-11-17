@@ -9,6 +9,11 @@ export default function(app: Application) {
       unique: true,
       required: true,
     },
+    userId: {
+      type: mongoose.Types.ObjectId,
+      required: true,
+    },
+    payType: String, // 'wx zfb'
     priceDetail: { // 当时购买的价格详情
       type: Object,
       required: true,
@@ -25,7 +30,7 @@ export default function(app: Application) {
       type: Date,
       default: new Date(),
     },
-    shopId: { // 商品类目
+    shopId: { // 商品信息
       type: mongoose.Types.ObjectId,
       required: true,
     },

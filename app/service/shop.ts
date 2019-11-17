@@ -55,6 +55,28 @@ export default class ShopService extends Service {
       },
     ]);
 
+    // 查询用户是否购买科目
+    // result.map(async item => {
+    //   const { _id } = item;
+    //   const time = await this.ctx.model.Time.findOne({
+    //     shopId: _id,
+    //     status: 1,
+    //   });
+    // });
+    for (const item of result) {
+      const { _id } = item;
+      const time = await this.ctx.model.Time.findOne({
+        shopId: _id,
+        status: 1,
+        userId: this.ctx.session.userInfo._id,
+      });
+      console.log('time', time);
+      if (time) {
+        item.endTime = time.endTime;
+        break;
+      }
+    }
+
     // 处理数据信息
     return {
       pagination: {
