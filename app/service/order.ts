@@ -220,7 +220,7 @@ export default class OrderService extends Service {
     const { ctx } = this;
     const orderDetail = await ctx.model.Order.findById(orderId);
     if (orderDetail) {
-      const { priceDetail, levelId, shopId } = orderDetail;
+      const { priceDetail, levelId, shopId, userId } = orderDetail;
       const { items } = priceDetail;
       let timeObj;
       items.map(item => {
@@ -251,7 +251,7 @@ export default class OrderService extends Service {
 
       // ctx.model.Time.
       const result = await ctx.service.common.createOrUpdate('Time', null, {
-        userId: ctx.session.userInfo._id,
+        userId,
         priceDetail,
         startTime: new Date(),
         endTime,
