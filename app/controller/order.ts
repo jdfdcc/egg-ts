@@ -95,6 +95,7 @@ export default class OrderController extends Controller {
       // 微信支付成功之后的回调
       if (payRes) {
         ctx.res.end('<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>');
+        ctx.body = '<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>';
       } else {
         return;
       }
