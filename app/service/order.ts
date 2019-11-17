@@ -231,6 +231,11 @@ export default class OrderService extends Service {
       status: 2,
       wxPayInfo: _extra,
     });
+    // 增加小伙的购买时长表
+    const { priceId, priceItemId } = result;
+    console.log('order-----:', result);
+    console.log('priceId:', priceId);
+    console.log('priceId:', priceItemId);
     return result;
   }
 }
