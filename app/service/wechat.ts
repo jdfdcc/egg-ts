@@ -1,5 +1,5 @@
 import { Service } from 'egg';
-import { appId, appSecret, decryptData, mchId, mchkey, remoteAddress, wxurl } from '../utils/wechat';
+import { appId, appSecret, decryptData, mchId, mchkey, remoteAddress, wxurl, refund } from '../utils/wechat';
 import { uuid } from '../utils/tools';
 import wxpay from '../utils/wxTools';
 
@@ -95,7 +95,9 @@ export default class WeChatService extends Service {
     const notify_url = wxurl;
     const trade_type = 'JSAPI';  // 'APP';公众号：'JSAPI'或'NATIVE'
 
-    const sign = await wxpay.paysignjsapi(appId, body, mch_id, nonce_str, notify_url, openid, out_trade_no, spbill_create_ip, total_fee, trade_type, mchkey);
+    const sign = await wxpay.paysignjsapi({
+      appId, body, mch_id, nonce_str, notify_url, openid, out_trade_no, spbill_create_ip, total_fee, trade_type,
+    }, mchkey);
 
     console.log('sign==', sign);
 
@@ -146,5 +148,78 @@ export default class WeChatService extends Service {
       appId, partnerId: mchId, prepayId: prepay_id, nonceStr: nonce_str, timeStamp: timestamp, package: _package, paySign: minisign,
     };
     return tempObj;
+  }
+
+  async WxPayRefund(orderId) {
+    const { ctx } = this;
+    const order = await ctx.model.Order.findById(orderId);
+    // const deferred = '32131'; // Q.defer();
+    const { wxPayInfo } = order;
+    const appid = appId;
+    // const nonce_str = this.createNonceStr();
+    // const timeStamp = this.createTimeStamp();
+    const nonce_str = wxpay.createNonceStr();
+    // const timestamp = wxpay.createTimeStamp();
+    // const spbill_create_ip = remoteAddress; // 支持IPV4和IPV6两种格式的IP地址。调用微信支付API的机器IP
+
+    // const body = '商户退款';
+    const sign = wxpay.paysignjsapi({
+      // appId, mchId, nonce_str, refund, openId: wxPayInfo.openId, out_trade_no: wxPayInfo.out_trade_no, spbill_create_ip, wxPayInfo.total_fee , 'JSAPI',
+      appid,
+      mch_id: mchId,
+      nonce_str,
+      // transaction_id: wxPayInfo.wxPayInfo,
+      out_refund_no: wxPayInfo.out_trade_no,
+      out_trade_no: wxPayInfo.out_trade_no,
+      total_fee: wxPayInfo.total_fee,
+      refund_fee: wxPayInfo.total_fee,
+      // refund_fee_type: wxPayInfo.fee_type,
+    }, mchkey);
+    const url = 'https://api.mch.weixin.qq.com/secapi/pay/refund'; //
+    let formData = '<xml>';
+    formData += '<appid>' + appid + '</appid>'; // 公众账号ID    appid
+    // formData += '<body><![CDATA[' + body + ']]></body>';
+    formData += '<mch_id>' + mchId + '</mch_id>'; // 商户号    mch_id
+    formData += '<nonce_str>' + nonce_str + '</nonce_str>'; // 随机字符串
+    formData += '<notify_url>' + refund + '</notify_url>'; // 退款结果通知url
+    formData += '<out_refund_no>' + wxPayInfo.out_trade_no + '</out_refund_no>'; // 商户退款单号
+    formData += '<out_trade_no>' + wxPayInfo.out_trade_no + '</out_trade_no>'; // 商户系统内部订单号
+    formData += '<total_fee>' + wxPayInfo.total_fee + '</total_fee>'; // 订单金额
+    formData += '<refund_fee>' + wxPayInfo.refund_fee + '</refund_fee>'; // 退款金额
+    formData += '<sign>' + sign + '</sign>'; // 签名    sign
+    formData += '</xml>';
+    // const self = this;
+    const result = await ctx.curl(url, {
+      dataType: 'text',
+      timeout: 3000,
+      method: 'POST',
+      // 通过 contentType 告诉 HttpClient 以 JSON 格式发送
+      data: formData,
+      // 明确告诉 HttpClient 以 JSON 格式处理返回的响应 body
+    });
+
+    const { data } = result;
+    console.log('data', data);
+    const return_code = await wxpay.getXMLNodeValue(data);
+    console.log('return_code', data);
+    // request({
+    //           url,
+    //           method: 'POST',
+    //           body: formData,
+    //           agentOptions: {
+    //               pfx: fs.readFileSync(__dirname + './../cert/apiclient_cert.p12'),
+    //               passphrase: _order.mch_id,
+    //           },
+    //       }, function(err, response, body) {
+    //           if (!err && response.statusCode === 200) {
+    //               console.log('11', body);
+    //               const data = parser(body);
+    //               deferred.resolve(data);
+    //           } else {
+    //               console.log('12', body);
+    //           }
+    //       });
+    // return deferred.promise;
+    //   },
   }
 }

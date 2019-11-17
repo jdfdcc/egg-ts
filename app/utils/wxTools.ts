@@ -32,19 +32,19 @@ export default {
   },
 
   // 签名加密算法
-  paysignjsapi: async (appid, body, mch_id, nonce_str, notify_url, openid, out_trade_no, spbill_create_ip, total_fee, trade_type, mchkey) => {
-    const ret = {
-      appid,
-      mch_id,
-      nonce_str,
-      body,
-      notify_url,
-      openid,
-      out_trade_no,
-      spbill_create_ip,
-      total_fee,
-      trade_type,
-    };
+  paysignjsapi: async (ret, mchkey) => {
+    // const ret = {
+    //   appid,
+    //   mch_id,
+    //   nonce_str,
+    //   body,
+    //   notify_url,
+    //   openid,
+    //   out_trade_no,
+    //   spbill_create_ip,
+    //   total_fee,
+    //   trade_type,
+    // };
     console.log('ret==', ret);
     let string = raw(ret);
     // let string = `appid=${appid}&body=${body}&device_info=1000&mch_id=${mch_id}&nonce_str=${nonce_str}`;
