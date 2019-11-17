@@ -219,7 +219,14 @@ export default class OrderService extends Service {
   async createUserTime(orderId: string) {
     const { ctx } = this;
     const orderDetail = await ctx.model.Order.findById(orderId);
-    if (orderDetail) {
+    let time = false;
+    try {
+      time = await ctx.model.Time.findOne({ orderId, status: 1 });
+    } catch (error) {
+      // 捕捉报错信息
+      time = true;
+    }
+    if (orderDetail && !time) {
       const { priceDetail, levelId, shopId, userId } = orderDetail;
       const { items } = priceDetail;
       let timeObj;
@@ -256,6 +263,7 @@ export default class OrderService extends Service {
         startTime: new Date(),
         endTime,
         levelId,
+        orderId,
         shopId,
       });
       return result;

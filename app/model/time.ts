@@ -34,6 +34,10 @@ export default function(app: Application) {
       type: mongoose.Types.ObjectId,
       required: true,
     },
+    orderId: { // 商品信息
+      type: mongoose.Types.ObjectId,
+      required: true,
+    },
     type: {
       type: String,
       default: 1,
@@ -51,5 +55,5 @@ export default function(app: Application) {
       default: new Date(),
     },
   });
-  return mongoose.model('time', ShopSchema);
+  return mongoose.model('Time', ShopSchema);
 }

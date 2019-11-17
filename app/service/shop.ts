@@ -18,7 +18,6 @@ export default class ShopService extends Service {
     // console.log(otherQuery);
     const totalNum = await this.ctx.model.Shop.countDocuments(match);
     // 聚合查询
-
     console.log('totalNum:', totalNum);
     console.log('skip:', pageSize * (current - 1));
     console.log('limit:', pageSize);
@@ -72,7 +71,17 @@ export default class ShopService extends Service {
       });
       console.log('time', time);
       if (time) {
-        item.endTime = time.endTime;
+        const { endTime, _id } = time;
+        if (endTime.getTime() > new Date().getTime()) {
+          item.endTime = time.endTime;
+        } else {
+          // 更新time的时间为失效时间
+          this.ctx.model.Time.updateOne({
+            _id,
+          }, {
+            status: 3,
+          });
+        }
         break;
       }
     }
