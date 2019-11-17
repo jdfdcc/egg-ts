@@ -4,6 +4,14 @@ import { Application } from 'egg';
  * 价格
  * 时间
  * @param app
+ * items
+ *  "desc" : "22",
+ *  "price" : 22,
+ *  "oldPrice" : 23,
+ *  "time" : 22,
+ *  "unit" : "m", d w m y
+ * "sort" : 22,
+ *  "uuid" : "sKp5E63Eb8YZGdP5QDjswKeiw6bS4Xzr"
  */
 export default function(app: Application) {
   const mongoose = app.mongoose;

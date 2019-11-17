@@ -14,7 +14,7 @@ export default function(app: Application) {
       required: true,
     },
     levelId: { // 购买的档次
-      type: mongoose.Types.ObjectId,
+      type: String,
       required: true,
     },
     startTime: { // 购买课程开始时间
@@ -29,8 +29,11 @@ export default function(app: Application) {
       type: mongoose.Types.ObjectId,
       required: true,
     },
-    type: String,
-    status: { // 1 正常 0 删除
+    type: {
+      type: String,
+      default: 1,
+    }, // 时长购买
+    status: { // 0 删除 1 正常 2 失效
       type: Number,
       default: 1,
     },

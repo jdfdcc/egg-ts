@@ -8,6 +8,7 @@ export default class OrderService extends Service {
    * 创建记录
    */
   async queryList(query) {
+    const { ctx } = this;
     const { pageSize = 10, current = 1, shopName = '', userName = '', orderNo = '', status, } = query;
     let match = {
       'shopDetail.name': new RegExp(`.*${shopName}.*`, 'i'),
@@ -16,7 +17,7 @@ export default class OrderService extends Service {
       status: status ? +status : undefined,
     };
     match = clearObj(match);
-    const totals = await this.ctx.model.Order.aggregate([
+    const totals = await ctx.model.Order.aggregate([
       {
         $lookup: {
           from: 'shops',
@@ -49,7 +50,7 @@ export default class OrderService extends Service {
       },
     ]);
     // 聚合查询
-    const result = await this.ctx.model.Order.aggregate([
+    const result = await ctx.model.Order.aggregate([
       {
         $lookup: {
           from: 'shops',
@@ -194,19 +195,71 @@ export default class OrderService extends Service {
    * _extra 存在于支付中间表
    */
   async paySuccess(_id, _extra) {
+    const { ctx } = this;
     // 订单只能从未支付到已支付的状态
-    const result = await this.ctx.model.Order.updateOne({
+    const result = await ctx.model.Order.updateOne({
       _id,
       status: 1,
     }, {
       status: 2,
       wxPayInfo: _extra,
     });
-    // 增加小伙的购买时长表
-    const { priceDetail, levelId } = result;
+    // { ok: 1, nModified: 0, n: 0 }
     console.log('order-----:', result);
-    console.log('priceId:', priceDetail);
-    console.log('priceId:', levelId);
+    if (+result.ok === 1) {
+      await this.createUserTime(_id);
+    }
     return result;
+  }
+
+  /**
+   *  兑换时长
+   *  增加小伙的购买时长表
+   */
+  async createUserTime(orderId: string) {
+    const { ctx } = this;
+    const orderDetail = await ctx.model.Order.findById(orderId);
+    if (orderDetail) {
+      const { priceDetail, levelId, shopId } = orderDetail;
+      const { items } = priceDetail;
+      let timeObj;
+      items.map(item => {
+        if (item.uuid === levelId) {
+          timeObj = item;
+        }
+        return item;
+      });
+      const { time, unit } = timeObj;
+      // d 天 w 星期 m 月 y 年 unit
+      const endTime = new Date();
+      switch (unit) {
+        case 'd': // 天
+          endTime.setDate(endTime.getDate() + time);
+          break;
+        case 'w': // 周
+          endTime.setDate(endTime.getDate() + time * 7);
+          break;
+        case 'm': // 月
+          endTime.setMonth(endTime.getMonth() + time);
+          break;
+        case 'y': // 年
+          endTime.setFullYear(endTime.getFullYear() + time);
+          break;
+        default:
+          break;
+      }
+
+      // ctx.model.Time.
+      const result = await ctx.service.common.createOrUpdate('Order', null, {
+        priceDetail,
+        startTime: new Date(),
+        endTime,
+        levelId,
+        shopId,
+      });
+      return result;
+    } else {
+      return false;
+    }
   }
 }
