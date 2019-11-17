@@ -201,7 +201,7 @@ export default class WeChatService extends Service {
     const { data } = result;
     console.log('data', data);
     const return_code = await wxpay.getXMLNodeValue(data);
-    console.log('return_code', data);
+    console.log('return_code', return_code);
     // request({
     //           url,
     //           method: 'POST',
