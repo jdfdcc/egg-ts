@@ -16,12 +16,10 @@ export default function(app: Application) {
     },
     userId: {
       type: Schema.Types.ObjectId,
-      unique: true,
       required: true,
     },
     openId: {
       type: String,
-      unique: true,
       required: true,
     },
     formId: { // 手机的formId
