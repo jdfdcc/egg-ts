@@ -211,7 +211,7 @@ export default class WeChatService extends Service {
   async sendSubscribeMessage(openId: string, form_id: string, template_id: string, page: string, data: any) {
     // 规则校验
     const access_token = await this.getAccessToken();
-    if (!access_token || openId || form_id || template_id || data) {
+    if (!access_token || !openId || !form_id || !template_id || !data) {
       return;
     }
     const req = {
