@@ -214,39 +214,27 @@ export default class WeChatService extends Service {
     if (!access_token) {
       return;
     }
+    const req = {
+      form_id, // '53380d26228f420680472a4638089a33',
+      touser: openId, // 'o2ns348BXkxgVfINjJlYCNPpgwxY', // 接收者（用户）的 openid
+      template_id, // 'gOCc3zriJ7F2FtBO59ARLugD8V9nCm0KVKqWo6_dKF0',
+      page,
+      data,
+    };
     // const access_token = '27_2exs4qsEhLsNOR3vA7sQ3eIX7zufbjtOK_ui259X_KuKICdxDk1oYkiU5QZffnKCMdJgXrSdCM557Y0Q3uOgnXBD9ofDHW_1E_eeU-uXQY8Ee-LRiVttWpO7ccKP9l9DebtFdyfuQCuvTS_4COLdABAKWT';
     console.log('access_token===>', access_token);
+    console.log('req===>', req);
     const url = `https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=${access_token}`;
     const _result = await this.ctx.curl(url, {
       dataType: 'json',
       timeout: 3000,
       method: 'POST',
-      data: {
-        form_id, // '53380d26228f420680472a4638089a33',
-        touser: openId, // 'o2ns348BXkxgVfINjJlYCNPpgwxY', // 接收者（用户）的 openid
-        template_id, // 'gOCc3zriJ7F2FtBO59ARLugD8V9nCm0KVKqWo6_dKF0',
-        page,
-        data,
-        // {
-        //   thing5: {
-        //     value: '339208499',
-        //   },
-        //   thing6: {
-        //       value: '2015年01月05日',
-        //   },
-        //   date8: {
-        //       value: 'TIT创意园',
-        //   },
-        //   amount7: {
-        //       value: '广州市新港中路397号',
-        //   },
-        //   character_string9: {
-        //       value: '广州市新港中路397号',
-        //   },
-        // }, // a21e55cc35b14aa09452220700c1d37f
-      },
+      data: JSON.stringify(req),
     });
     console.log('_result===>', _result);
+    // 发送成功后清除formId
+    await this.ctx.model.Wxform.findOneAndDelete({ formId: form_id });
+    return _result;
   }
 
   /**
@@ -262,15 +250,16 @@ export default class WeChatService extends Service {
       return value;
     }
     const result = await this.ctx.curl(url, {
-      dataType: 'text',
+      dataType: 'json',
       timeout: 3000,
       method: 'GET',
     });
-    console.log(result);
+    // console.log(result);
     if (!result.errcode) {
-      this.ctx.app.config.wechat_config.token.value = result.access_token;
+      // console.log(result.data.access_token);
+      this.ctx.app.config.wechat_config.token.value = result.data.access_token;
       this.ctx.app.config.wechat_config.token.time = new Date().getTime();
-      return result.access_token;
+      return result.data.access_token;
     } else {
       return;
     }

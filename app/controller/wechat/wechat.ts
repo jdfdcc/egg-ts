@@ -94,12 +94,12 @@ export default class WeChatController extends Controller {
       return ctx.body = fail('用户不存在');
     }
     const { openId, _id } = user;
-    const wxForm = await model.WxForm.findOne({ userId: _id });
+    const wxForm = await model.Wxform.findOne({ userId: _id });
     if (!wxForm) {
-      return ctx.body = fail('发送通知失败');
+      return ctx.body = fail('发送通知失败: formId 不存在了');
     }
     const { formId } = wxForm;
-    const result = await ctx.service.wechat.sendSubscribeMessage(openId, formId, page, templateId, data);
+    const result = await ctx.service.wechat.sendSubscribeMessage(openId, formId, templateId, page, data);
     ctx.body = success(result);
   }
 }
