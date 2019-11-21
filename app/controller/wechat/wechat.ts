@@ -68,7 +68,7 @@ export default class WeChatController extends Controller {
   async collectFromId() {
     const { ctx } = this;
     const user = ctx.session.userInfo;
-    ctx.service.common.createOrUpdate('WxForm', '', {
+    ctx.service.common.createOrUpdate('Wxform', '', {
       openId: user.openId,
       userId: user._id,
       formId: ctx.query.formId,
