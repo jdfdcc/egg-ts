@@ -11,6 +11,7 @@ export default function(app: Application) {
       required: true,
     },
     userName: String,
+    sex: String, // F 女 M 男
     loginName: String, // 登录用户名
     password: String, // 登录密码
     idNo: String, // 用户身份证号码

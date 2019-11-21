@@ -32,19 +32,19 @@ export default {
   },
 
   // 签名加密算法
-  paysignjsapi: async (ret, mchkey) => {
-    // const ret = {
-    //   appid,
-    //   mch_id,
-    //   nonce_str,
-    //   body,
-    //   notify_url,
-    //   openid,
-    //   out_trade_no,
-    //   spbill_create_ip,
-    //   total_fee,
-    //   trade_type,
-    // };
+  paysignjsapi: async (appid, body, mch_id, nonce_str, notify_url, openid, out_trade_no, spbill_create_ip, total_fee, trade_type, mchkey) => {
+    const ret = {
+      appid,
+      mch_id,
+      nonce_str,
+      body,
+      notify_url,
+      openid,
+      out_trade_no,
+      spbill_create_ip,
+      total_fee,
+      trade_type,
+    };
     console.log('ret==', ret);
     let string = raw(ret);
     // let string = `appid=${appid}&body=${body}&device_info=1000&mch_id=${mch_id}&nonce_str=${nonce_str}`;
@@ -71,6 +71,25 @@ export default {
     console.log('Ministring>>>>>>', string);
     const crypto = require('crypto');
     return crypto.createHash('md5').update(string, 'utf8').digest('hex').toUpperCase();
+  },
+
+  // 退款的签名生成
+  refundsignjsapi(appid, mch_id, nonce_str, out_refund_no, out_trade_no, refund_fee, total_fee, mchkey) {
+    const ret = {
+        appid,
+        mch_id,
+        nonce_str,
+        // notify_url: notify_url,
+        out_refund_no,
+        out_trade_no,
+        refund_fee,
+        total_fee,
+    };
+    let string = raw(ret);
+    string = string + '&key=' + mchkey; // key为在微信商户平台(pay.weixin.qq.com)-->账户设置-->API安全-->密钥设置
+    const crypto = require('crypto');
+    const sign = crypto.createHash('md5').update(string, 'utf8').digest('hex');
+    return sign.toUpperCase();
   },
 
   getXMLNodeValue: async xml => {

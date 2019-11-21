@@ -32,9 +32,6 @@ export default class UserService extends Service {
     const tempUser = await ctx.model.User.findOne(params, {
       password: 0,
     });
-    return {
-      avatar: tempUser.avatar,
-      userName: tempUser.userName,
-    };
+    return tempUser;
   }
 }

@@ -14,6 +14,7 @@ export default (app: Application) => {
   router.post(`${api}/common/queryOne`, controller.common.queryOne);
 
   router.post(`${api}/order/queryList`, controller.order.queryList);
+  router.post(`${api}/order/refund`, controller.order.refund);
   router.post(`${api}/order/payresult`, xmlparser({ trim: false, explicitArray: false }), controller.order.payresult);
 
   // web pc 接口配置

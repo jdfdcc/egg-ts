@@ -13,7 +13,7 @@ export const remoteAddress = '119.23.255.136';
 
 export const wxurl = 'https://jerome.chaobenxueyuan.com/api/order/payresult';
 
-export const refund = 'https://jerome.chaobenxueyuan.com/api/order/refund';
+export const refund = 'https://jerome.chaobenxueyuan.com/api/order/payresult';
 
 /**
  * 解析小程序的加密信息

@@ -60,4 +60,46 @@ export default class WeChatController extends Controller {
     });
     ctx.body = success(result);
   }
+
+  /**
+   * 收集用户的formId
+   */
+
+  async collectFromId() {
+    const { ctx } = this;
+    const user = ctx.session.userInfo;
+    ctx.service.common.createOrUpdate('WxForm', '', {
+      openId: user.openId,
+      userId: user._id,
+      formId: ctx.query.formId,
+    });
+    ctx.body = success('接收成功');
+  }
+
+  /**
+   * 发送订阅消息
+   */
+  async sendSubscribeMessage() {
+    const { ctx } = this;
+    const { model, request } = ctx;
+    const { userId, openId: tempId, data, templateId, page } = request.body;
+    let query: any = { _id: userId };
+    if (!userId && tempId) {
+      query = {
+        openId: tempId,
+      };
+    }
+    const user = await model.User.findOne(query);
+    if (!user) {
+      return ctx.body = fail('用户不存在');
+    }
+    const { openId, _id } = user;
+    const wxForm = await model.WxForm.findOne({ userId: _id });
+    if (!wxForm) {
+      return ctx.body = fail('发送通知失败');
+    }
+    const { formId } = wxForm;
+    const result = await ctx.service.wechat.sendSubscribeMessage(openId, formId, page, templateId, data);
+    ctx.body = success(result);
+  }
 }

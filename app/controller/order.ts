@@ -57,6 +57,14 @@ export default class OrderController extends Controller {
     }
   }
 
+  // 退款接口
+  async refund() {
+    const { ctx } = this;
+    const { request } = ctx;
+    const result = await ctx.service.wechat.WxPayRefund(request.body.id);
+    ctx.body = success(result);
+  }
+
   /**
    * 微信支付成功的回掉地址
    * { appid: 'wxcb03144d55fc82c4',

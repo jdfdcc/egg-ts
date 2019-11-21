@@ -24,6 +24,13 @@ export default (appInfo: EggAppInfo) => {
     options: {},
   };
 
+  config.wechat_config = {
+    token: {
+      time: null,
+      value: '',
+    },
+  };
+
   config.session = {
     key: 'SESSION_ID',
     maxAge: 60 * 10 * 1000, // 10 分钟

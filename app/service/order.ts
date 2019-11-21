@@ -161,6 +161,7 @@ export default class OrderService extends Service {
         preceDetail,
       },
     });
+    // 发送微信订阅消息
     return result;
   }
 

@@ -8,6 +8,7 @@ export default (app: Application, api: string) => {
   // 解析数据 解析用户的手机号码
   router.post(`${api}/wx/user/decrypt`, auth('WX'), controller.wechat.wechat.decryptData);
   router.get(`${api}/wx/user/info`, auth('WX'), controller.wechat.wechat.userInfo);
+  router.get(`${api}/wx/user/collectFormId`, auth('WX'), controller.wechat.wechat.collectFromId);
   // 支付
   // router.post(`${api}/wx/pay`, auth('WX'), controller.wechat.pay);
   router.post(`${api}/wx/order/create`, auth('WX'), controller.order.create);
@@ -16,4 +17,7 @@ export default (app: Application, api: string) => {
   // 商城相关的接口配置
   router.post(`${api}/wx/shop/list`, auth('WX'), controller.wechat.shop.queryList);
   router.get(`${api}/wx/shop/detail`, auth('WX'), controller.wechat.shop.queryDetail);
+
+  router.post(`${api}/wx/common/sendMessage`, controller.wechat.wechat.sendSubscribeMessage);
+
 };
