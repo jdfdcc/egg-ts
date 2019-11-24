@@ -196,8 +196,11 @@ export default class OrderService extends Service {
    * _extra 存在于支付中间表
    */
   async paySuccess(_id, _extra) {
+    console.log('支付成功的回调参数', _extra);
     const { ctx } = this;
     // 订单只能从未支付到已支付的状态
+    const order = await ctx.model.Order.findById(_id);
+    if (!order) return;
     const result = await ctx.model.Order.updateOne({
       _id,
       status: 1,
@@ -205,10 +208,36 @@ export default class OrderService extends Service {
       status: 2,
       wxPayInfo: _extra,
     });
-    // { ok: 1, nModified: 0, n: 0 }
     console.log('order-----:', result);
-    if (+result.ok === 1) {
+    if (+result.ok === 1 && +order.status === 1) {
       await this.createUserTime(_id);
+      // 发送模版消息
+      const { userId, shopId, money, orderNo, } = order;
+      const user = await ctx.model.User.findById(userId);
+      const shopDetail = await ctx.model.Shop.findById(shopId);
+      const { openId } = user;
+      ctx.service.wechat.sendSubscribeMessage({
+        openId,
+        template_id: 'gOCc3zriJ7F2FtBO59ARLugD8V9nCm0KVKqWo6_dKF0',
+        page: '',
+        data: {
+          thing5: {
+            value: '订单已提交，点击下方查看您的订单详情。',
+          },
+          thing6: {
+            value: shopDetail.name,
+          },
+          date8: {
+            value: new Date(),
+          },
+          amount7: {
+            value: `${money}元`,
+          },
+          character_string9: {
+            value: orderNo,
+          },
+        },
+      });
     }
     return result;
   }

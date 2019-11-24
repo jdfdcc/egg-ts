@@ -200,22 +200,22 @@ export default class WeChatService extends Service {
     });
 
     const { data } = result;
-    console.log('data', data);
+    // console.log('data', data);
     const return_code = await wxpay.getXMLNodeValue(data);
-    console.log('return_code', return_code);
+    // console.log('return_code', return_code);
   }
 
   /**
    * 发送微信消息
    */
-  async sendSubscribeMessage(openId: string, form_id: string, template_id: string, page: string, data: any) {
+  async sendSubscribeMessage(params: { openId: string, template_id: string, page: string, data: any }) {
+    const { openId, template_id, page, data } = params;
     // 规则校验
     const access_token = await this.getAccessToken();
     if (!access_token || !openId || !form_id || !template_id || !data) {
       return;
     }
     const req = {
-      form_id,
       touser: openId, // 接收者（用户）的 openid
       template_id, // 模版ID
       page,
@@ -223,7 +223,7 @@ export default class WeChatService extends Service {
     };
     // const access_token = '27_2exs4qsEhLsNOR3vA7sQ3eIX7zufbjtOK_ui259X_KuKICdxDk1oYkiU5QZffnKCMdJgXrSdCM557Y0Q3uOgnXBD9ofDHW_1E_eeU-uXQY8Ee-LRiVttWpO7ccKP9l9DebtFdyfuQCuvTS_4COLdABAKWT';
     console.log('access_token===>', access_token);
-    console.log('req===>', req);
+    // console.log('req===>', req);
     const url = `https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=${access_token}`;
     const _result = await this.ctx.curl(url, {
       dataType: 'json',
@@ -231,7 +231,7 @@ export default class WeChatService extends Service {
       method: 'POST',
       data: JSON.stringify(req),
     });
-    console.log('_result===>', _result);
+    // console.log('_result===>', _result);
     // 发送成功后清除formId --- 不关心是否成功返回
     this.ctx.model.Wxform.findOneAndDelete({ formId: form_id });
     return _result;
